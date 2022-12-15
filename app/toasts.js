@@ -56,6 +56,10 @@ export class ToastsItem {
         this.DOM.toastInner = document.createElement('div');
         this.DOM.toastInner.className = 'd-flex item';
 
+        this.DOM.toastLine = document.createElement('div');
+        this.DOM.toastLine.className = 'toast-line';
+        this.DOM.toastLine.style.animationDuration = `${this.data.displayTime/1000}s`;
+
         this.DOM.toastBody = document.createElement('div');
         this.DOM.toastBody.className = 'toast-body';
         this.DOM.toastBody.innerHTML = this.data.text;
@@ -66,6 +70,7 @@ export class ToastsItem {
 
 
         this.DOM.toast.appendChild(this.DOM.toastInner);
+        this.DOM.toast.appendChild(this.DOM.toastLine);
         this.DOM.toastInner.appendChild(this.DOM.toastBody);
         this.DOM.toastInner.appendChild(this.DOM.toastCloseBtn);
 
@@ -73,7 +78,7 @@ export class ToastsItem {
     }
 
     showToast() {
-        this.toast = new bootstrap.Toast(this.DOM.toast).show();
+        new bootstrap.Toast(this.DOM.toast).show();
     }
 
     removeToast() {

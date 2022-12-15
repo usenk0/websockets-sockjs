@@ -1,30 +1,17 @@
-import {ToastsQueue, ToastsItem} from './toasts';
+import {
+    ToastsQueue,
+    ToastsItem
+} from './toasts';
 
-// here will be the logic for the queue
-let queue = new ToastsQueue();
+const MAX_ELEMENTS = 5;
+const el = document.getElementById("notifications");
 
-const MAX_ELEMENTS = 8;
-
+let toastsQueue = new ToastsQueue();
 let freeSlots = MAX_ELEMENTS;
 
 (async function () {
 
-    const ws = await connectToServer();
-
-    ws.onmessage = (webSocketMessage) => {
-        // temporal queue logic
-        if(freeSlots > 0){
-            const el = document.getElementById("notifications");
-            let toastItem = new ToastsItem(el, JSON.parse(webSocketMessage.data));
-            freeSlots--;
-            toastItem.DOM.toast.addEventListener('hidden.bs.toast',  () => {
-                toast.removeToast();
-                freeSlots++;
-            })
-        }
-    };
-
-    async function connectToServer() {
+    const connectToServer = async () => {
         const ws = new SockJS('http://localhost:7071/ws');
         return new Promise((resolve, reject) => {
             const timer = setInterval(() => {
@@ -34,6 +21,27 @@ let freeSlots = MAX_ELEMENTS;
                 }
             }, 10);
         });
+    }
+
+    const ws = await connectToServer();
+
+    ws.onmessage = (webSocketMessage) => {
+        toastsQueue.enqueue(JSON.parse(webSocketMessage.data));
+        showRecursivelyToasts();
+    };
+
+     const showRecursivelyToasts = () => {
+        if (freeSlots > 0 && !toastsQueue.isEmpty()) {
+            let toastItem = new ToastsItem(el, toastsQueue.dequeue());
+            freeSlots--;
+            toastItem.DOM.toast.addEventListener('hidden.bs.toast', () => {
+                toastItem.removeToast();
+                freeSlots++;
+                showRecursivelyToasts();
+            });
+        } else {
+            return;
+        }
     }
 
 })();

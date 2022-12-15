@@ -14,7 +14,7 @@ wss.on('connection', (ws) => {
   console.log("connected");
 
   clients.set(ws);
-  intervalID = setInterval(sendElement, 6000);
+  intervalID = setInterval(sendElement, 1000);
 
   function sendElement() {
     [...clients.keys()].forEach((client) => {
