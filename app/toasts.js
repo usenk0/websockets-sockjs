@@ -49,36 +49,39 @@ export class ToastsItem {
     layout() {
         this.DOM.toast = document.createElement('div');
         this.DOM.toast.className = `toast ${this.data.level}`;
-        this.DOM.toast.dataset.bsAnimation = true;
-        this.DOM.toast.dataset.bsAutohide = true;
-        this.DOM.toast.dataset.bsDelay = this.data.displayTime;
+        this.DOM.toast.dataset.animation = true;
+        this.DOM.toast.dataset.autohide = true;
+        this.DOM.toast.dataset.delay = this.data.displayTime * 1000;
 
         this.DOM.toastInner = document.createElement('div');
         this.DOM.toastInner.className = 'd-flex item';
 
         this.DOM.toastLine = document.createElement('div');
         this.DOM.toastLine.className = 'toast-line';
-        this.DOM.toastLine.style.animationDuration = `${this.data.displayTime/1000}s`;
+        this.DOM.toastLine.style.animationDuration = `${this.data.displayTime}s`;
 
         this.DOM.toastBody = document.createElement('div');
         this.DOM.toastBody.className = 'toast-body';
         this.DOM.toastBody.innerHTML = this.data.text;
 
         this.DOM.toastCloseBtn = document.createElement('button');
-        this.DOM.toastCloseBtn.className = 'btn-close btn-close-white';
-        this.DOM.toastCloseBtn.dataset.bsDismiss = 'toast';
+        this.DOM.toastCloseBtn.className = 'ml-2 mb-1 close btn-close-white';
+        this.DOM.toastCloseBtn.dataset.dismiss = 'toast';
 
+        this.DOM.toastCloseBtnSpan = document.createElement('span');
+        this.DOM.toastCloseBtnSpan.innerHTML = '&times;';
 
         this.DOM.toast.appendChild(this.DOM.toastInner);
         this.DOM.toast.appendChild(this.DOM.toastLine);
         this.DOM.toastInner.appendChild(this.DOM.toastBody);
+        this.DOM.toastCloseBtn.appendChild(this.DOM.toastCloseBtnSpan);
         this.DOM.toastInner.appendChild(this.DOM.toastCloseBtn);
 
         this.DOM.el.appendChild(this.DOM.toast);
     }
 
     showToast() {
-        new bootstrap.Toast(this.DOM.toast).show();
+        $(this.DOM.toast).toast('show');
     }
 
     removeToast() {

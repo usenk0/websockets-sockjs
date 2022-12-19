@@ -43,10 +43,15 @@ body {
     color: white;
 }
 
-.btn-close {
+.btn-close-white {
     margin-top: 10px !important;
     margin-right: 10px !important;
     color: #fff !important;
+    box-shadow: inset;
+}
+ 
+.btn-close-white span {
+    color: #fff;
 }
 
 .SUCCESS {
@@ -72,10 +77,11 @@ body {
     height: 2px;
     width: 0;
     background-color: white;
-    animation-name: animateThis;
+    animation-name: progressBar;
     animation-fill-mode: forwards;
+    animation-timing-function: linear;
   }
-  @keyframes animateThis {
+  @keyframes progressBar {
     0% {
       width: 0;
     }

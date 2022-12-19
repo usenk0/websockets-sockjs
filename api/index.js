@@ -23,7 +23,7 @@ wss.on('connection', (ws) => {
           id: Math.floor(Math.random() * 100),
           level: statusArray[Math.floor(Math.random()*statusArray.length)],
           text: text,
-          displayTime: Math.floor(Math.random() * 100000)
+          displayTime: Math.floor(Math.random() * 100)
         })
       );
     });

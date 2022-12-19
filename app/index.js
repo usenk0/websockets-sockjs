@@ -30,18 +30,17 @@ let freeSlots = MAX_ELEMENTS;
         showRecursivelyToasts();
     };
 
-     const showRecursivelyToasts = () => {
+    const showRecursivelyToasts = () => {
         if (freeSlots > 0 && !toastsQueue.isEmpty()) {
             let toastItem = new ToastsItem(el, toastsQueue.dequeue());
             freeSlots--;
-            toastItem.DOM.toast.addEventListener('hidden.bs.toast', () => {
+            $(toastItem.DOM.toast).on('hidden.bs.toast', () => {
                 toastItem.removeToast();
-                freeSlots++;
+                if(freeSlots < MAX_ELEMENTS) freeSlots++;
                 showRecursivelyToasts();
             });
         } else {
             return;
         }
     }
-
 })();
