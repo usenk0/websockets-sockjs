@@ -9,7 +9,7 @@ const el = document.getElementById("notifications");
 let toastsQueue = new ToastsQueue();
 let freeSlots = MAX_ELEMENTS;
 
-(async function () {
+(async () => {
 
     const connectToServer = async () => {
         const ws = new SockJS('http://localhost:7071/ws');
@@ -35,6 +35,7 @@ let freeSlots = MAX_ELEMENTS;
             let toastItem = new ToastsItem(el, toastsQueue.dequeue());
             freeSlots--;
             $(toastItem.DOM.toast).on('hidden.bs.toast', () => {
+                $(toastItem.DOM.toast).off();
                 toastItem.removeToast();
                 if(freeSlots < MAX_ELEMENTS) freeSlots++;
                 showRecursivelyToasts();
